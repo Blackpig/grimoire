@@ -27,6 +27,13 @@ abstract class GrimoireTomeCluster extends Cluster
      */
     public static string $tomeId = '';
 
+    /**
+     * Sort all Grimoire Tome clusters to the very end of the sidebar.
+     * A high sort value ensures the Help group appears after all host-app groups
+     * regardless of registration order or other plugins.
+     */
+    protected static ?int $navigationSort = PHP_INT_MAX;
+
     public static function getNavigationLabel(): string
     {
         return static::getTomeRegistration()?->label ?? parent::getNavigationLabel();
