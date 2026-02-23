@@ -73,6 +73,23 @@ class PublishTomeCommand extends Command
             $published++;
         }
 
+        // Also copy the images/ subdirectory if it exists.
+        $imagesSource = "{$vendorPath}/images";
+        $imagesTarget = "{$targetDirectory}/images";
+
+        if (is_dir($imagesSource)) {
+            if (! is_dir($imagesTarget)) {
+                mkdir($imagesTarget, 0755, true);
+            }
+
+            foreach (File::files($imagesSource) as $image) {
+                $imageTarget = "{$imagesTarget}/{$image->getFilename()}";
+                File::copy($image->getRealPath(), $imageTarget);
+                $this->components->twoColumnDetail('Published', $imageTarget);
+                $published++;
+            }
+        }
+
         $this->newLine();
         $this->components->info("Published {$published} file(s), skipped {$skipped}.");
 

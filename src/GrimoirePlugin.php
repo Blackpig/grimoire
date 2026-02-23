@@ -8,7 +8,6 @@ use BlackpigCreatif\Grimoire\Facades\Grimoire;
 use BlackpigCreatif\Grimoire\Filament\Clusters\GrimoireDocumentationCluster;
 use Closure;
 use Filament\Contracts\Plugin;
-use Filament\Navigation\NavigationGroup;
 use Filament\Panel;
 
 class GrimoirePlugin implements Plugin
@@ -153,10 +152,6 @@ class GrimoirePlugin implements Plugin
             );
         }
 
-        // Register the navigation group definition.
-        $panel->navigationGroups([
-            NavigationGroup::make($group),
-        ]);
     }
 
     public function boot(Panel $panel): void

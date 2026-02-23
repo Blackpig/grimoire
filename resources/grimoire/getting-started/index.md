@@ -18,7 +18,7 @@ Documentation lives in `.md` files on disk — no database required. Authors wri
 
 ## Getting Started
 
-1. [Registering a Tome](registering-a-tome) — How to create your first Tome and wire it up
+1. [Registering a Tome](registering-a-tome) — How to create your first Tome, register the plugin, and add the required CSS
 2. [Extending a Tome](extending-a-tome) — Add local chapters to a package's Tome
 3. [Writing Chapters](writing-chapters) — Markdown tips and frontmatter reference
 4. [Images](images) — Where to store documentation screenshots

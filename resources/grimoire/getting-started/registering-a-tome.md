@@ -66,11 +66,33 @@ The Cluster stub lives inside the package itself — no host app action required
 
 ## Registering the plugin
 
-Finally, add the Grimoire plugin to your panel provider:
+Grimoire **auto-registers itself** on any panel that doesn't already have it, so no manual step is required when you just want the defaults.
+
+If you want to customise the navigation group label, enable the built-in Grimoire docs, or set a custom prose theme, add the plugin explicitly to your panel provider:
 
 ```php
 ->plugins([
     \BlackpigCreatif\Grimoire\GrimoirePlugin::make()
-        ->navigationGroup('Help'),
+        ->navigationGroup('Help')   // optional — default is 'Help'
+        ->withDocs()                // optional — show Grimoire's own documentation
+        ->theme('prose-slate'),     // optional — custom CSS class on the chapter wrapper
 ])
 ```
+
+## Theming — adding Grimoire styles
+
+Grimoire ships its own self-contained CSS for rendering Markdown as readable prose. Without it, chapter pages will display unstyled HTML.
+
+Add the import to your panel's theme CSS file (typically `resources/css/filament/admin/theme.css`):
+
+```css
+@import '../../../../vendor/blackpig-creatif/grimoire/resources/css/grimoire.css';
+```
+
+Then rebuild your panel's assets:
+
+```bash
+npm run build
+```
+
+> **Tip:** The Grimoire stylesheet uses Filament's CSS custom properties (`--color-gray-*`, etc.) for colours, so it automatically adapts to light and dark mode without any extra configuration.
