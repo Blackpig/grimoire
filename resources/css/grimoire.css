@@ -1,0 +1,207 @@
+/**
+ * Grimoire — Chapter prose & syntax highlight styles.
+ *
+ * Self-contained — does not require @tailwindcss/typography.
+ * Import this file in your panel's theme CSS:
+ *
+ *   @import '../../../../vendor/blackpig-creatif/grimoire/resources/css/grimoire.css';
+ */
+
+/* --------------------------------------------------------------------------
+   Prose — readable typographic styles for rendered Markdown
+   -------------------------------------------------------------------------- */
+
+.grimoire-prose {
+    color: var(--color-gray-800);
+    max-width: none;
+    line-height: 1.75;
+}
+
+.dark .grimoire-prose {
+    color: var(--color-gray-200);
+}
+
+.grimoire-prose h1,
+.grimoire-prose h2,
+.grimoire-prose h3,
+.grimoire-prose h4,
+.grimoire-prose h5,
+.grimoire-prose h6 {
+    font-weight: 600;
+    line-height: 1.25;
+    color: var(--color-gray-900);
+    margin-top: 2em;
+    margin-bottom: 0.75em;
+}
+
+.dark .grimoire-prose h1,
+.dark .grimoire-prose h2,
+.dark .grimoire-prose h3,
+.dark .grimoire-prose h4,
+.dark .grimoire-prose h5,
+.dark .grimoire-prose h6 {
+    color: var(--color-gray-50);
+}
+
+.grimoire-prose h1 { font-size: 1.875rem; margin-top: 0; }
+.grimoire-prose h2 { font-size: 1.5rem; }
+.grimoire-prose h3 { font-size: 1.25rem; }
+.grimoire-prose h4 { font-size: 1.125rem; }
+
+.grimoire-prose p {
+    margin-top: 0;
+    margin-bottom: 1.25em;
+}
+
+.grimoire-prose strong {
+    font-weight: 600;
+    color: var(--color-gray-900);
+}
+
+.dark .grimoire-prose strong {
+    color: var(--color-gray-50);
+}
+
+.grimoire-prose em {
+    font-style: italic;
+}
+
+.grimoire-prose a {
+    color: var(--color-primary-600);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.grimoire-prose a:hover {
+    color: var(--color-primary-700);
+}
+
+.dark .grimoire-prose a {
+    color: var(--color-primary-400);
+}
+
+.grimoire-prose ul,
+.grimoire-prose ol {
+    padding-left: 1.5em;
+    margin-bottom: 1.25em;
+}
+
+.grimoire-prose ul { list-style-type: disc; }
+.grimoire-prose ol { list-style-type: decimal; }
+
+.grimoire-prose li {
+    margin-top: 0.375em;
+    margin-bottom: 0.375em;
+}
+
+.grimoire-prose blockquote {
+    border-left: 4px solid var(--color-primary-400);
+    padding-left: 1em;
+    color: var(--color-gray-600);
+    font-style: italic;
+    margin: 1.5em 0;
+}
+
+.dark .grimoire-prose blockquote {
+    color: var(--color-gray-400);
+    border-left-color: var(--color-primary-500);
+}
+
+.grimoire-prose hr {
+    border-color: var(--color-gray-200);
+    margin: 2em 0;
+}
+
+.dark .grimoire-prose hr {
+    border-color: var(--color-gray-700);
+}
+
+/* Inline code */
+.grimoire-prose :not(pre) > code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.875em;
+    background-color: var(--color-gray-100);
+    color: var(--color-gray-800);
+    padding: 0.2em 0.4em;
+    border-radius: 0.25rem;
+}
+
+.dark .grimoire-prose :not(pre) > code {
+    background-color: var(--color-gray-800);
+    color: var(--color-gray-200);
+}
+
+/* Tables */
+.grimoire-prose table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.5em;
+    font-size: 0.9em;
+}
+
+.grimoire-prose th {
+    background-color: var(--color-gray-100);
+    font-weight: 600;
+    text-align: left;
+    padding: 0.5em 0.75em;
+    border: 1px solid var(--color-gray-200);
+}
+
+.dark .grimoire-prose th {
+    background-color: var(--color-gray-800);
+    border-color: var(--color-gray-700);
+}
+
+.grimoire-prose td {
+    padding: 0.5em 0.75em;
+    border: 1px solid var(--color-gray-200);
+}
+
+.dark .grimoire-prose td {
+    border-color: var(--color-gray-700);
+}
+
+.grimoire-prose tr:nth-child(even) td {
+    background-color: var(--color-gray-50);
+}
+
+.dark .grimoire-prose tr:nth-child(even) td {
+    background-color: var(--color-gray-900);
+}
+
+/* Strikethrough */
+.grimoire-prose del {
+    text-decoration: line-through;
+    color: var(--color-gray-500);
+}
+
+/* --------------------------------------------------------------------------
+   Syntax highlighting — fenced code blocks via tempest/highlight
+   -------------------------------------------------------------------------- */
+
+.grimoire-prose pre {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.875rem;
+    line-height: 1.7;
+    background-color: #282c34;
+    color: #abb2bf;
+    border-radius: 0.5rem;
+    padding: 1.25rem 1.5rem;
+    overflow-x: auto;
+    margin: 1.5em 0;
+}
+
+/* Tempest highlight token classes (One Dark palette) */
+.hl-keyword   { color: #c678dd; }
+.hl-property  { color: #e06c75; }
+.hl-string    { color: #98c379; }
+.hl-number    { color: #d19a66; }
+.hl-comment   { color: #7f848e; font-style: italic; }
+.hl-type      { color: #e5c07b; }
+.hl-operator  { color: #56b6c2; }
+.hl-variable  { color: #abb2bf; }
+.hl-function  { color: #61afef; }
+.hl-tag       { color: #e06c75; }
+.hl-attribute { color: #d19a66; }
+.hl-value     { color: #98c379; }
+.hl-injection { opacity: 0.85; }

@@ -1,33 +1,35 @@
 {
-    "name": ":vendor_slug/:package_slug",
-    "description": ":package_description",
+    "name": "blackpig-creatif/grimoire",
+    "description": "In-panel documentation for FilamentPHP applications",
     "keywords": [
-        ":vendor_name",
+        "blackpig-creatif",
         "laravel",
         "filamentphp",
         "filament",
         "filament-plugin",
-        ":package_slug"
+        "documentation",
+        "grimoire"
     ],
-    "homepage": "https://github.com/:vendor_slug/:package_slug",
+    "homepage": "https://github.com/blackpig-creatif/grimoire",
     "support": {
-        "issues": "https://github.com/:vendor_slug/:package_slug/issues",
-        "source": "https://github.com/:vendor_slug/:package_slug"
+        "issues": "https://github.com/blackpig-creatif/grimoire/issues",
+        "source": "https://github.com/blackpig-creatif/grimoire"
     },
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": "author@domain.com",
+            "name": "Blackpig Creatif",
+            "email": "stuart@blackpig.eu",
             "role": "Developer"
         }
     ],
     "require": {
-        "php": "^8.2",
+        "php": "^8.2|^8.3|^8.4",
         "filament/filament": "^5.0",
-        "filament/forms": "^5.0",
-        "filament/tables": "^5.0",
-        "spatie/laravel-package-tools": "^1.15.0"
+        "league/commonmark": "^2.4",
+        "spatie/laravel-package-tools": "^1.15.0",
+        "spatie/yaml-front-matter": "^2.0",
+        "tempest/highlight": "^2.0"
     },
     "require-dev": {
         "larastan/larastan": "^3.0",
@@ -38,18 +40,16 @@
         "pestphp/pest-plugin-arch": "^3.0|^4.0",
         "pestphp/pest-plugin-laravel": "^3.0|^4.0",
         "pestphp/pest-plugin-livewire": "^3.0|^4.0",
-        "rector/rector": "^2.0",
-        "spatie/laravel-ray": "^1.26"
+        "rector/rector": "^2.0"
     },
     "autoload": {
         "psr-4": {
-            "VendorName\\Skeleton\\": "src/",
-            "VendorName\\Skeleton\\Database\\Factories\\": "database/factories/"
+            "BlackpigCreatif\\Grimoire\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "VendorName\\Skeleton\\Tests\\": "tests/"
+            "BlackpigCreatif\\Grimoire\\Tests\\": "tests/"
         }
     },
     "scripts": {
@@ -64,17 +64,16 @@
     "extra": {
         "laravel": {
             "providers": [
-                "VendorName\\Skeleton\\SkeletonServiceProvider"
+                "BlackpigCreatif\\Grimoire\\GrimoireServiceProvider"
             ],
             "aliases": {
-                "Skeleton": "VendorName\\Skeleton\\Facades\\Skeleton"
+                "Grimoire": "BlackpigCreatif\\Grimoire\\Facades\\Grimoire"
             }
         }
     },
     "config": {
         "sort-packages": true,
         "allow-plugins": {
-            "composer/package-versions-deprecated": true,
             "pestphp/pest-plugin": true,
             "phpstan/extension-installer": true
         }

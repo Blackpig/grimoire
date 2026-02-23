@@ -1,77 +1,194 @@
-# :package_description
+# Grimoire
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/:vendor_slug/:package_slug.svg?style=flat-square)](https://packagist.org/packages/:vendor_slug/:package_slug)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/:vendor_slug/:package_slug/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/:vendor_slug/:package_slug/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/:vendor_slug/:package_slug/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/:vendor_slug/:package_slug/actions?query=workflow%3A"Fix+PHP+code+styling"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/:vendor_slug/:package_slug.svg?style=flat-square)](https://packagist.org/packages/:vendor_slug/:package_slug)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/blackpig-creatif/grimoire.svg?style=flat-square)](https://packagist.org/packages/blackpig-creatif/grimoire)
+[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/blackpig-creatif/grimoire/run-tests.yml?branch=5.x&label=tests&style=flat-square)](https://github.com/blackpig-creatif/grimoire/actions?query=workflow%3Arun-tests+branch%3A5.x)
+[![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/blackpig-creatif/grimoire/fix-php-code-style-issues.yml?branch=5.x&label=code%20style&style=flat-square)](https://github.com/blackpig-creatif/grimoire/actions?query=workflow%3A"Fix+PHP+code+styling"+branch%3A5.x)
+[![Total Downloads](https://img.shields.io/packagist/dt/blackpig-creatif/grimoire.svg?style=flat-square)](https://packagist.org/packages/blackpig-creatif/grimoire)
 
-<!--delete-->
+**In-panel documentation for FilamentPHP v5 applications.**
+
+Grimoire lets you embed rich, versioned documentation directly inside your Filament admin panel. Organise content into *Tomes* (top-level books) and *Chapters* (individual pages), author in Markdown with YAML frontmatter, and edit chapters inline without leaving the panel.
+
 ---
-This repo can be used to scaffold a Filament plugin. Follow these steps to get started:
 
-1. Press the "Use this template" button at the top of this repo to create a new repo with the contents of this skeleton.
-2. Run "php ./configure.php" to run a script that will replace all placeholders throughout all the files.
-3. Make something great!
+## Requirements
+
+- PHP 8.2+
+- Laravel 11 or 12
+- Filament v5
+
 ---
-<!--/delete-->
-
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
 
 ## Installation
 
-You can install the package via composer:
+```bash
+composer require blackpig-creatif/grimoire
+```
+
+Publish the config (optional):
 
 ```bash
-composer require :vendor_slug/:package_slug
+php artisan vendor:publish --tag="grimoire-config"
 ```
 
-> [!IMPORTANT]
-> If you have not set up a custom theme and are using Filament Panels follow the instructions in the [Filament Docs](https://filamentphp.com/docs/4.x/styling/overview#creating-a-custom-theme) first.
+---
 
-After setting up a custom theme add the plugin's views to your theme css file or your app's css file if using the standalone packages.
+## Plugin Registration
 
-```css
-@source '../../../../vendor/:vendor_slug/:package_slug/resources/**/*.blade.php';
-```
-
-You can publish and run the migrations with:
-
-```bash
-php artisan vendor:publish --tag=":package_slug-migrations"
-php artisan migrate
-```
-
-You can publish the config file with:
-
-```bash
-php artisan vendor:publish --tag=":package_slug-config"
-```
-
-Optionally, you can publish the views using
-
-```bash
-php artisan vendor:publish --tag=":package_slug-views"
-```
-
-This is the contents of the published config file:
+Register the plugin in your Filament panel provider:
 
 ```php
-return [
-];
+use BlackpigCreatif\Grimoire\GrimoirePlugin;
+
+public function panel(Panel $panel): Panel
+{
+    return $panel
+        ->plugins([
+            GrimoirePlugin::make()
+                ->navigationGroup('Help')    // optional — defaults to 'Help'
+                ->withDocs(),                // optional — enables Grimoire's own built-in docs
+        ]);
+}
 ```
 
-## Usage
+---
+
+## Registering a Tome
+
+A Tome is a top-level documentation section. Register one in your `AppServiceProvider::boot()`:
 
 ```php
-$variable = new VendorName\Skeleton();
-echo $variable->echoPhrase('Hello, VendorName!');
+use BlackpigCreatif\Grimoire\Facades\Grimoire;
+
+Grimoire::registerTome(
+    id: 'my-docs',
+    label: 'My Documentation',
+    icon: 'heroicon-o-book-open',
+    path: resource_path('grimoire/my-docs'),
+    clusterClass: \App\Filament\Grimoire\Clusters\MyDocsCluster::class,
+);
 ```
+
+Then scaffold the required Filament stubs:
+
+```bash
+php artisan grimoire:make-tome my-docs "My Documentation"
+```
+
+---
+
+## Adding Chapters
+
+```bash
+php artisan grimoire:make-chapter my-docs my-chapter "My Chapter Title"
+```
+
+This generates a Filament page stub and a Markdown file at `resources/grimoire/my-docs/my-chapter.md`. Add content with YAML frontmatter:
+
+```markdown
+---
+title: My Chapter
+order: 1
+icon: heroicon-o-document-text
+---
+
+# My Chapter
+
+Content goes here.
+```
+
+---
+
+## Extending a Tome
+
+Override or add chapters to any Tome (including vendor Tomes) from your app:
+
+```php
+Grimoire::extendTome(
+    id: 'my-docs',
+    path: resource_path('grimoire/my-docs-local'),
+);
+```
+
+Local chapters take priority over vendor chapters on slug collision — useful for overriding package documentation with app-specific notes.
+
+---
+
+## Inline Editing
+
+Authenticated users with edit permission can edit chapter content directly in the panel. Click **Edit** on any chapter page to switch to an inline editor with a Markdown editor for content and a YAML editor for frontmatter.
+
+Edit permissions are configurable in `config/grimoire.php`:
+
+```php
+'permissions' => [
+    'view' => fn ($user) => true,
+    'edit' => fn ($user) => $user->is_admin,
+],
+```
+
+---
+
+## Locale Support
+
+Grimoire supports two locale strategies for multilingual documentation. Configure in `config/grimoire.php`:
+
+```php
+'locale_strategy' => 'suffix',   // 'suffix' or 'directory'
+'fallback_locale'  => 'en',
+```
+
+**Suffix strategy** — place locale variants alongside the default file:
+
+```
+my-chapter.md       ← locale-neutral fallback
+my-chapter.fr.md    ← French
+my-chapter.de.md    ← German
+```
+
+**Directory strategy** — organise by locale subdirectory:
+
+```
+my-chapter.md
+fr/my-chapter.md
+de/my-chapter.md
+```
+
+Grimoire resolves files in order: current locale → fallback locale → locale-neutral.
+
+---
+
+## Built-in Self-Documentation
+
+Enable Grimoire's own documentation Tome inside your panel with `->withDocs()`:
+
+```php
+GrimoirePlugin::make()->withDocs()
+
+// Or conditionally — e.g. local environment only:
+GrimoirePlugin::make()->withDocs(fn ($user) => app()->isLocal())
+```
+
+---
+
+## Caching
+
+For production, cache the navigation tree:
+
+```bash
+php artisan grimoire:cache
+php artisan grimoire:clear-cache
+```
+
+---
 
 ## Testing
 
 ```bash
 composer test
 ```
+
+---
 
 ## Changelog
 
@@ -87,7 +204,7 @@ Please review [our security policy](.github/SECURITY.md) on how to report securi
 
 ## Credits
 
-- [:author_name](https://github.com/:author_username)
+- [Blackpig Creatif](https://github.com/blackpig-creatif)
 - [All Contributors](../../contributors)
 
 ## License
