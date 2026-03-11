@@ -1,5 +1,6 @@
 {
     "name": "blackpig-creatif/grimoire",
+    "version": "1.0.1",
     "description": "In-panel documentation for FilamentPHP applications",
     "keywords": [
         "blackpig-creatif",
