@@ -6,6 +6,7 @@ namespace BlackpigCreatif\Grimoire\Filament\Pages;
 
 use BlackpigCreatif\Grimoire\Data\ChapterData;
 use BlackpigCreatif\Grimoire\Data\TomeRegistration;
+use BlackpigCreatif\Grimoire\Filament\Concerns\ChecksGrimoirePermissions;
 use BlackpigCreatif\Grimoire\Services\MarkdownRenderer;
 use BlackpigCreatif\Grimoire\Services\TomeRegistry;
 use BlackpigCreatif\Grimoire\Services\TomeScanner;
@@ -31,6 +32,8 @@ use Spatie\YamlFrontMatter\YamlFrontMatter;
  */
 abstract class GrimoireChapterPage extends Page
 {
+    use ChecksGrimoirePermissions;
+
     /**
      * The Tome ID this Chapter belongs to. Set on every concrete stub subclass.
      */
@@ -104,16 +107,11 @@ abstract class GrimoireChapterPage extends Page
 
     public static function canAccess(): bool
     {
-        $user = auth()->user();
-
-        if ($user === null) {
+        if (auth()->user() === null) {
             return false;
         }
 
-        /** @var callable $viewPermission */
-        $viewPermission = config('grimoire.permissions.view', fn ($u) => true);
-
-        return (bool) $viewPermission($user);
+        return static::checkPermission('view');
     }
 
     /**
@@ -126,16 +124,11 @@ abstract class GrimoireChapterPage extends Page
             return false;
         }
 
-        $user = auth()->user();
-
-        if ($user === null) {
+        if (auth()->user() === null) {
             return false;
         }
 
-        /** @var callable $editPermission */
-        $editPermission = config('grimoire.permissions.edit', fn ($u) => false);
-
-        return (bool) $editPermission($user);
+        return static::checkPermission('edit');
     }
 
     protected function getHeaderActions(): array

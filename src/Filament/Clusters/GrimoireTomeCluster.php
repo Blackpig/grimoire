@@ -6,6 +6,7 @@ namespace BlackpigCreatif\Grimoire\Filament\Clusters;
 
 use BackedEnum;
 use BlackpigCreatif\Grimoire\Data\TomeRegistration;
+use BlackpigCreatif\Grimoire\Filament\Concerns\ChecksGrimoirePermissions;
 use BlackpigCreatif\Grimoire\Services\TomeRegistry;
 use Filament\Clusters\Cluster;
 use Filament\Panel;
@@ -22,6 +23,8 @@ use Symfony\Component\Routing\Exception\RouteNotFoundException;
  */
 abstract class GrimoireTomeCluster extends Cluster
 {
+    use ChecksGrimoirePermissions;
+
     /**
      * The unique Tome ID. Must be set on every concrete stub subclass.
      */
@@ -91,15 +94,11 @@ abstract class GrimoireTomeCluster extends Cluster
 
     public static function canAccess(): bool
     {
-        $user = auth()->user();
-
-        if ($user === null) {
+        if (auth()->user() === null) {
             return false;
         }
 
-        $viewPermission = config('grimoire.permissions.view', fn ($u) => true);
-
-        return (bool) $viewPermission($user);
+        return static::checkPermission('view');
     }
 
     /**

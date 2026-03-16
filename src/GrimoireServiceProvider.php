@@ -22,6 +22,7 @@ use Livewire\Features\SupportTesting\Testable;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
+use Symfony\Component\HttpFoundation\Response;
 
 class GrimoireServiceProvider extends PackageServiceProvider
 {
@@ -63,7 +64,7 @@ class GrimoireServiceProvider extends PackageServiceProvider
         $this->app->singleton(MarkdownRenderer::class);
 
         // Bind the main Grimoire class (facade target).
-        $this->app->singleton(Grimoire::class, fn ($app) => new \BlackpigCreatif\Grimoire\Grimoire(
+        $this->app->singleton(Grimoire::class, fn ($app) => new Grimoire(
             registry: $app->make(TomeRegistry::class),
         ));
     }
@@ -96,7 +97,7 @@ class GrimoireServiceProvider extends PackageServiceProvider
         // This allows markdown files to reference images in their vendor directory
         // without a separate publish step.
         // Usage in markdown: ![Alt text](/grimoire-asset/{tomeId}/{filename})
-        Route::get('/grimoire-asset/{tomeId}/{filename}', function (string $tomeId, string $filename): \Symfony\Component\HttpFoundation\Response {
+        Route::get('/grimoire-asset/{tomeId}/{filename}', function (string $tomeId, string $filename): Response {
             $tome = app(TomeRegistry::class)->find($tomeId);
 
             abort_if($tome === null, 404);
