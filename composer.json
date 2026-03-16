@@ -1,6 +1,6 @@
 {
     "name": "blackpig-creatif/grimoire",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "In-panel documentation for FilamentPHP applications",
     "keywords": [
         "blackpig-creatif",
@@ -11,10 +11,10 @@
         "documentation",
         "grimoire"
     ],
-    "homepage": "https://github.com/blackpig-creatif/grimoire",
+    "homepage": "https://github.com/blackpig/grimoire",
     "support": {
-        "issues": "https://github.com/blackpig-creatif/grimoire/issues",
-        "source": "https://github.com/blackpig-creatif/grimoire"
+        "issues": "https://github.com/blackpig/grimoire/issues",
+        "source": "https://github.com/blackpig/grimoire"
     },
     "license": "MIT",
     "authors": [
