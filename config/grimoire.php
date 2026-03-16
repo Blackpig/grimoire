@@ -24,12 +24,16 @@ return [
     | edit — controls who can edit local .md files in-panel (default: nobody).
     |
     | Example:
-    |   'edit' => fn ($user) => $user->hasRole('admin'),
+    |   'edit' => null,
+    |   or
+    |   'edit' => 'grimoire.edit',
+    |   or
+    |   'edit' => 'App\Policies\GrimoirePolicy@edit',
     |
     */
     'permissions' => [
-        'view' => fn ($user) => true,
-        'edit' => fn ($user) => false,
+        'view' => null,
+        'edit' => null,
     ],
 
     /*

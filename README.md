@@ -114,11 +114,54 @@ Local chapters take priority over vendor chapters on slug collision — useful f
 
 ---
 
-## Inline Editing
+## Permissions
 
-Authenticated users with edit permission can edit chapter content directly in the panel. Click **Edit** on any chapter page to switch to an inline editor with a Markdown editor for content and a YAML editor for frontmatter.
+Access to view and edit documentation is controlled via `config/grimoire.php`:
 
-Edit permissions are configurable in `config/grimoire.php`:
+```php
+'permissions' => [
+    'view' => null,   // null = allow all authenticated users (default)
+    'edit' => null,   // null = deny all (default)
+],
+```
+
+Each key accepts one of the following:
+
+**`null` (default behaviour)**
+
+- `view`: all authenticated users may read chapters
+- `edit`: no one may edit chapters
+
+**A Laravel Gate ability name**
+
+```php
+'permissions' => [
+    'view' => 'view-docs',
+    'edit' => 'edit-docs',
+],
+```
+
+Define the ability in `AuthServiceProvider` (or a dedicated `GrimoirePolicy`):
+
+```php
+Gate::define('view-docs', fn (User $user) => $user->hasRole('staff'));
+Gate::define('edit-docs', fn (User $user) => $user->hasRole('admin'));
+```
+
+**A `Class@method` string**
+
+```php
+'permissions' => [
+    'view' => \App\Policies\GrimoirePolicy::class . '@view',
+    'edit' => \App\Policies\GrimoirePolicy::class . '@edit',
+],
+```
+
+The method receives the authenticated user as its only argument and must return a boolean.
+
+**A closure (local development only)**
+
+Closures work when config is not cached, making them convenient for local development. They cannot be used in production with `php artisan config:cache`.
 
 ```php
 'permissions' => [
@@ -126,6 +169,12 @@ Edit permissions are configurable in `config/grimoire.php`:
     'edit' => fn ($user) => $user->is_admin,
 ],
 ```
+
+---
+
+## Inline Editing
+
+Authenticated users with edit permission can edit chapter content directly in the panel. Click **Edit** on any chapter page to switch to an inline editor with a Markdown editor for content and a YAML editor for frontmatter.
 
 ---
 
