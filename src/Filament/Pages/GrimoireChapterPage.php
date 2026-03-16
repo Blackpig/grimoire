@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace BlackpigCreatif\Grimoire\Filament\Pages;
 
-use BlackpigCreatif\Grimoire\Filament\Concerns\ChecksGrimoirePermissions;
 use BlackpigCreatif\Grimoire\Data\ChapterData;
 use BlackpigCreatif\Grimoire\Data\TomeRegistration;
+use BlackpigCreatif\Grimoire\Filament\Concerns\ChecksGrimoirePermissions;
 use BlackpigCreatif\Grimoire\Services\MarkdownRenderer;
 use BlackpigCreatif\Grimoire\Services\TomeRegistry;
 use BlackpigCreatif\Grimoire\Services\TomeScanner;

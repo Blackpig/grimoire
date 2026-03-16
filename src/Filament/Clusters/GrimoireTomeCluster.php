@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace BlackpigCreatif\Grimoire\Filament\Clusters;
 
 use BackedEnum;
-use BlackpigCreatif\Grimoire\Filament\Concerns\ChecksGrimoirePermissions;
 use BlackpigCreatif\Grimoire\Data\TomeRegistration;
+use BlackpigCreatif\Grimoire\Filament\Concerns\ChecksGrimoirePermissions;
 use BlackpigCreatif\Grimoire\Services\TomeRegistry;
 use Filament\Clusters\Cluster;
 use Filament\Panel;
