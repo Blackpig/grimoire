@@ -2,6 +2,12 @@
 
 All notable changes to Grimoire will be documented in this file.
 
+## v1.0.1 - 2026-05-26
+
+### Fixed
+
+- Inline code spans containing mustache-style tokens (e.g. `` `{name}` ``, `` `{topic}` ``) no longer render as empty `<code>` elements. The `InlineCodeBlockRenderer` from `tempest/highlight` uses `{word}` as a language specifier, which silently consumed the entire content when the code span was just a token. Fenced code blocks retain full syntax highlighting; inline code now uses CommonMark's default HTML-escaped renderer.
+
 ## v1.0.0 - 2026-02-23
 
 ### Added

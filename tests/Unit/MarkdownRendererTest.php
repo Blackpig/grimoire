@@ -56,6 +56,16 @@ it('renders fenced code blocks with tempest/highlight syntax highlighting', func
         ->toContain('echo');
 });
 
+it('renders inline code containing mustache-style tokens without eating the content', function () {
+    $result = $this->renderer->render('Use `{name}`, `{topic}`, and `{message}` in your template.');
+
+    expect($result['html'])
+        ->toContain('<code>')
+        ->toContain('{name}')
+        ->toContain('{topic}')
+        ->toContain('{message}');
+});
+
 it('returns empty html for empty content', function () {
     $result = $this->renderer->render('');
 

@@ -6,10 +6,11 @@ namespace BlackpigCreatif\Grimoire\Services;
 
 use League\CommonMark\Environment\Environment;
 use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
+use League\CommonMark\Extension\CommonMark\Node\Block\FencedCode;
 use League\CommonMark\Extension\GithubFlavoredMarkdownExtension;
 use League\CommonMark\MarkdownConverter;
 use Spatie\YamlFrontMatter\YamlFrontMatter;
-use Tempest\Highlight\CommonMark\HighlightExtension;
+use Tempest\Highlight\CommonMark\CodeBlockRenderer;
 use Tempest\Highlight\Highlighter;
 use Tempest\Highlight\Themes\CssTheme;
 
@@ -81,7 +82,11 @@ final class MarkdownRenderer
 
         $environment->addExtension(new CommonMarkCoreExtension);
         $environment->addExtension(new GithubFlavoredMarkdownExtension);
-        $environment->addExtension(new HighlightExtension(new Highlighter(new CssTheme)));
+        // Register only the fenced-code renderer from tempest/highlight.
+        // The inline code renderer is intentionally excluded: it uses {word} as a language
+        // specifier, which silently eats mustache-style tokens like {name} or {topic},
+        // producing empty <code> elements. Inline code does not need syntax highlighting.
+        $environment->addRenderer(FencedCode::class, new CodeBlockRenderer(new Highlighter(new CssTheme)), 10);
 
         return new MarkdownConverter($environment);
     }
