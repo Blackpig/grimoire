@@ -2,7 +2,7 @@
 
 All notable changes to Grimoire will be documented in this file.
 
-## v1.0.1 - 2026-05-26
+## v2.0.1 - 2026-05-26
 
 ### Fixed
 
