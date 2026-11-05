@@ -66,18 +66,19 @@ The Cluster stub lives inside the package itself — no host app action required
 
 ## Registering the plugin
 
-Grimoire **auto-registers itself** on any panel that doesn't already have it, so no manual step is required when you just want the defaults.
-
-If you want to customise the navigation group label, enable the built-in Grimoire docs, or set a custom prose theme, add the plugin explicitly to your panel provider:
+Add the plugin to every panel that should show your own Tomes (the stubs generated into `app/Filament/Grimoire`). Tomes shipped by other packages are registered by those packages' plugins and appear without it.
 
 ```php
 ->plugins([
     \BlackpigCreatif\Grimoire\GrimoirePlugin::make()
         ->navigationGroup('Help')   // optional — default is 'Help'
+        ->tomes(['my-docs'])        // optional — only these Tomes in this panel
         ->withDocs()                // optional — show Grimoire's own documentation
         ->theme('prose-slate'),     // optional — custom CSS class on the chapter wrapper
 ])
 ```
+
+Each option applies to that panel only.
 
 ## Theming — adding Grimoire styles
 

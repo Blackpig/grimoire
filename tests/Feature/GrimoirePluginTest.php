@@ -9,6 +9,8 @@ use BlackpigCreatif\Grimoire\Tests\Fixtures\HostTomes\Clusters\BetaCluster;
 use BlackpigCreatif\Grimoire\Tests\Fixtures\HostTomes\FixtureGrimoirePlugin;
 use BlackpigCreatif\Grimoire\Tests\Fixtures\HostTomes\Pages\AlphaIndexPage;
 use BlackpigCreatif\Grimoire\Tests\Fixtures\HostTomes\Pages\BetaIndexPage;
+use Filament\Events\ServingFilament;
+use Filament\Facades\Filament;
 use Filament\Panel;
 
 it('registers every host Tome when no tomes are given', function () {
@@ -46,4 +48,37 @@ it('registers the self-documentation Tome once when withDocs is enabled on sever
 
     expect(app(TomeRegistry::class)->find('grimoire'))->not->toBeNull()
         ->and($second->getPages())->toContain(GrimoireDocumentationCluster::class);
+});
+
+it('uses each panel\'s own navigation group and theme', function () {
+    $help = Panel::make()->id('help')->plugin(FixtureGrimoirePlugin::make()->navigationGroup('Help')->theme('prose-help'));
+    $guides = Panel::make()->id('guides')->plugin(FixtureGrimoirePlugin::make()->navigationGroup('Guides')->theme('prose-guides'));
+
+    Filament::setCurrentPanel($help);
+    $helpGroup = AlphaCluster::getNavigationGroup();
+    $helpTheme = FixtureGrimoirePlugin::current()->getTheme();
+
+    Filament::setCurrentPanel($guides);
+
+    expect($helpGroup)->toBe('Help')
+        ->and($helpTheme)->toBe('prose-help')
+        ->and(AlphaCluster::getNavigationGroup())->toBe('Guides')
+        ->and(FixtureGrimoirePlugin::current()->getTheme())->toBe('prose-guides');
+});
+
+it('falls back to config for the navigation group on a panel without the plugin', function () {
+    config(['grimoire.navigation_group' => 'Docs']);
+
+    Filament::setCurrentPanel(Panel::make()->id('bare'));
+
+    expect(AlphaCluster::getNavigationGroup())->toBe('Docs');
+});
+
+it('does not add the plugin to a panel while serving Filament', function () {
+    $panel = Panel::make()->id('bare');
+    Filament::setCurrentPanel($panel);
+
+    event(new ServingFilament);
+
+    expect($panel->hasPlugin('grimoire'))->toBeFalse();
 });
