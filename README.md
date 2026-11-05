@@ -51,6 +51,20 @@ public function panel(Panel $panel): Panel
 }
 ```
 
+### Multi-panel apps
+
+By default every host-app Tome (the stubs in `app/Filament/Grimoire`) is registered in every panel that uses the plugin. Pass `tomes()` to choose which Tomes a panel gets:
+
+```php
+// AdminPanelProvider
+GrimoirePlugin::make()->tomes(['admin-guide']),
+
+// EditorPanelProvider
+GrimoirePlugin::make()->tomes(['editor-guide']),
+```
+
+Tomes outside the list get no routes or navigation in that panel. An empty array registers no host-app Tomes. Tomes shipped by other packages (for example Sceau's SEO docs) are registered by those packages' own plugins and are not affected, and Grimoire's own documentation is controlled by `withDocs()`.
+
 ---
 
 ## Registering a Tome
