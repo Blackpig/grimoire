@@ -14,9 +14,7 @@ use BlackpigCreatif\Grimoire\Services\MarkdownRenderer;
 use BlackpigCreatif\Grimoire\Services\TomeRegistry;
 use BlackpigCreatif\Grimoire\Services\TomeScanner;
 use BlackpigCreatif\Grimoire\Testing\TestsGrimoire;
-use Filament\Events\ServingFilament;
 use Filament\Support\Assets\Asset;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
 use Livewire\Features\SupportTesting\Testable;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
@@ -77,21 +75,6 @@ class GrimoireServiceProvider extends PackageServiceProvider
                 __DIR__ . '/../resources/css/grimoire.css' => public_path('css/grimoire.css'),
             ], 'grimoire-assets');
         }
-
-        // Auto-register GrimoirePlugin on any panel that doesn't already have it.
-        // This allows packages that bundle a Grimoire Tome (e.g. Sceau) to "just work"
-        // without the host app needing to explicitly add GrimoirePlugin to their panel.
-        // If GrimoirePlugin is already registered (e.g. with ->withDocs() or ->theme()),
-        // that explicit registration takes precedence and this is skipped.
-        Event::listen(ServingFilament::class, function (): void {
-            $panel = filament()->getCurrentPanel();
-
-            if ($panel === null || $panel->hasPlugin('grimoire')) {
-                return;
-            }
-
-            $panel->plugin(GrimoirePlugin::make());
-        });
 
         // Register the authenticated asset route that serves images from Tome paths.
         // This allows markdown files to reference images in their vendor directory

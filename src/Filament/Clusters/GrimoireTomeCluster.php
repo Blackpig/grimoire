@@ -7,6 +7,7 @@ namespace BlackpigCreatif\Grimoire\Filament\Clusters;
 use BackedEnum;
 use BlackpigCreatif\Grimoire\Data\TomeRegistration;
 use BlackpigCreatif\Grimoire\Filament\Concerns\ChecksGrimoirePermissions;
+use BlackpigCreatif\Grimoire\GrimoirePlugin;
 use BlackpigCreatif\Grimoire\Services\TomeRegistry;
 use Filament\Clusters\Cluster;
 use Filament\Panel;
@@ -78,7 +79,7 @@ abstract class GrimoireTomeCluster extends Cluster
 
     public static function getNavigationGroup(): ?string
     {
-        return config('grimoire.navigation_group', 'Help');
+        return GrimoirePlugin::current()?->getNavigationGroup() ?? config('grimoire.navigation_group', 'Help');
     }
 
     public static function getSlug(?Panel $panel = null): string

@@ -7,6 +7,7 @@ namespace BlackpigCreatif\Grimoire\Filament\Pages;
 use BlackpigCreatif\Grimoire\Data\ChapterData;
 use BlackpigCreatif\Grimoire\Data\TomeRegistration;
 use BlackpigCreatif\Grimoire\Filament\Concerns\ChecksGrimoirePermissions;
+use BlackpigCreatif\Grimoire\GrimoirePlugin;
 use BlackpigCreatif\Grimoire\Services\MarkdownRenderer;
 use BlackpigCreatif\Grimoire\Services\TomeRegistry;
 use BlackpigCreatif\Grimoire\Services\TomeScanner;
@@ -175,7 +176,7 @@ abstract class GrimoireChapterPage extends Page
         return [
             'renderedHtml' => $this->renderedHtml,
             'currentChapter' => $this->currentChapter,
-            'proseTheme' => config('grimoire.theme', ''),
+            'proseTheme' => GrimoirePlugin::current()?->getTheme() ?? config('grimoire.theme', ''),
             'tomeId' => static::$tomeId,
         ];
     }

@@ -11,6 +11,11 @@ All notable changes to Grimoire will be documented in this file.
 ### Fixed
 
 - Enabling `withDocs()` on more than one panel threw "A Tome with id 'grimoire' is already registered", because the plugin registered the self-documentation Tome once per panel. It is now registered only once.
+- `navigationGroup()` and `theme()` now apply per panel. The plugin previously wrote them into global config on every panel, so the last panel registered set them for all panels.
+
+### Removed
+
+- GrimoirePlugin is no longer added automatically to panels that don't register it. The auto-registration ran while serving the request, after routes were registered, so any host-app Tomes it discovered appeared in navigation without routes. Tomes shipped by other packages (e.g. Sceau) never needed it and keep working; add `GrimoirePlugin::make()` to any panel that should show host-app Tomes.
 
 ## v2.0.1 - 2026-05-26
 

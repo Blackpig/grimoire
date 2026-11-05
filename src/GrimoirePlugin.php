@@ -130,17 +130,36 @@ class GrimoirePlugin implements Plugin
         return $this->withDocs;
     }
 
+    public function getNavigationGroup(): string
+    {
+        return $this->navigationGroup ?: config('grimoire.navigation_group', 'Help');
+    }
+
+    public function getTheme(): string
+    {
+        return $this->theme ?: config('grimoire.theme', '');
+    }
+
+    /**
+     * The plugin instance on the current panel, or null when the panel has none
+     * (e.g. a panel showing only Tomes shipped by other packages).
+     */
+    public static function current(): ?static
+    {
+        $panel = filament()->getCurrentPanel();
+
+        if ($panel === null || ! $panel->hasPlugin('grimoire')) {
+            return null;
+        }
+
+        /** @var static $plugin */
+        $plugin = $panel->getPlugin('grimoire');
+
+        return $plugin;
+    }
+
     public function register(Panel $panel): void
     {
-        $group = $this->navigationGroup ?: config('grimoire.navigation_group', 'Help');
-        $theme = $this->theme ?: config('grimoire.theme', '');
-
-        // Merge plugin-level overrides into config so pages and clusters can read them.
-        config([
-            'grimoire.navigation_group' => $group,
-            'grimoire.theme' => $theme,
-        ]);
-
         if ($this->withDocs !== false) {
             // The registry is app-wide but register() runs once per panel, so only the
             // first panel with ->withDocs() registers the Tome.
