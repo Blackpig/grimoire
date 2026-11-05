@@ -2,6 +2,16 @@
 
 All notable changes to Grimoire will be documented in this file.
 
+## v2.1.0 - 2026-11-05
+
+### Added
+
+- `GrimoirePlugin::tomes()` to limit a panel to specific host-app Tomes. Previously every Tome in `app/Filament/Grimoire` was registered in every panel, so multi-panel apps had to guard each Cluster with a panel check in `canAccess()`. Omitting `tomes()` keeps the existing register-everything behaviour.
+
+### Fixed
+
+- Enabling `withDocs()` on more than one panel threw "A Tome with id 'grimoire' is already registered", because the plugin registered the self-documentation Tome once per panel. It is now registered only once.
+
 ## v2.0.1 - 2026-05-26
 
 ### Fixed
